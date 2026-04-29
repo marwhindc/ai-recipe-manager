@@ -1,0 +1,38 @@
+schema: spec-driven
+
+context: |
+  Project: AI Recipe Manager – a mobile-first web app powered by AI.
+  Monorepo layout:
+    /frontend  – React 18 + Vite + Tailwind CSS (feature-based folder structure, NOT component-based)
+    /backend   – Java 21 + Spring Boot 3 (feature-based / domain-driven, CLEAN code standards)
+  Database: Supabase (PostgreSQL). Auth: HTTP Basic Auth stub for development.
+  The app has 5 planned features: Recipes, Collections, Grocery, Discover, Profile.
+  Currently scoping only the Recipes feature – basic CRUD only.
+  Design aesthetic: Flavorish-inspired – warm, appetising, mobile-first, clean cards.
+  Do NOT add dependencies without explicit user approval – suggest them instead.
+  Follow CLEAN code standards and Domain-Driven Design (DDD) architecture.
+  Use conventional commits.
+  All API endpoints are RESTful JSON.
+  Do not expose internal IDs directly; use UUIDs where possible.
+
+conventions:
+  artifact_updates:
+    - Artifacts that have not yet been implemented or archived represent the current intended state.
+    - When refining an artifact (proposal, design, spec, tasks), update it to reflect what is true now.
+    - Do NOT add notes about what was removed, what is deferred to a follow-up, or what was "previously" in scope.
+    - Do NOT add callouts like "> Removed fields: ...", "— DEFERRED", "follow-up change", or "this iteration".
+    - If a capability is out of scope, simply omit it. Let the artifact speak for itself.
+
+rules:
+  proposal:
+    - Keep proposals focused on the currently scoped capabilities only
+    - Include a "Non-goals" section listing out-of-scope features
+  design:
+    - Separate frontend and backend design concerns clearly
+    - Frontend: describe feature folder structure under /frontend/src/features/recipes/
+    - Backend: describe domain structure under /backend/src/main/java/.../recipes/
+    - Include API contract (endpoints, request/response shapes) as a section
+  tasks:
+    - Break tasks into chunks of max 2-3 hours each
+    - Separate frontend tasks from backend tasks
+    - Include setup/scaffold tasks before feature tasks

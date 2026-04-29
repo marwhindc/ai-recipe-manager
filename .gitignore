@@ -1,0 +1,8 @@
+# AI Agent Configuration Files
+.agent
+.claude
+.gemini
+.github
+
+# Environment Variables
+.env
