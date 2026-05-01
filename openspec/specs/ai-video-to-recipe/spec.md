@@ -1,32 +1,37 @@
 # Capability: ai-video-to-recipe
 
 ## Purpose
-Define AI-assisted recipe import from video sources. This capability is deferred in the current change.
+Define AI-assisted recipe import from video and other source links. The system accepts a source link and produces a structured recipe draft via a staged pipeline of source retrieval, transcription/parsing, and recipe extraction.
 
 ## Requirements
 
-No active requirements are synced for this capability in the current change.
+### Requirement: System can import recipe draft from a source link
+The system SHALL accept a source link and produce a structured recipe draft by executing a staged pipeline: source retrieval, transcription/parsing, and recipe extraction.
 
-## Deferred Scope
+#### Scenario: Import succeeds for a valid source link
+- **WHEN** an authenticated user submits `POST /api/v1/recipes/import/video` with a valid `sourceUrl`
+- **THEN** the backend executes download, transcription/parsing, and extraction in order
+- **AND THEN** the server responds with HTTP 200 and a recipe draft payload containing title, ingredients, steps, and optional metadata
 
-> **Status:** Out of scope for the `recipes-feature` change. All requirements in this capability are deferred to a dedicated follow-up change.
+#### Scenario: Source retrieval fails
+- **WHEN** the import pipeline cannot retrieve or download content for the provided `sourceUrl`
+- **THEN** the server responds with a structured error mapped from `VideoDownloadException`
+- **AND THEN** no recipe is persisted
 
-The following capabilities were originally planned for this change and have been explicitly removed from scope:
+#### Scenario: Transcription/parsing fails
+- **WHEN** source retrieval succeeds but transcription/parsing fails
+- **THEN** the server responds with a structured error mapped from `TranscriptionException`
+- **AND THEN** no recipe is persisted
 
-- `VideoDownloader` (yt-dlp subprocess)
-- `TranscriptionService` (AssemblyAI)
-- `RecipeExtractionService` (Gemini)
-- `VideoImportOrchestrator`
-- `POST /api/v1/recipes/import/video` endpoint
-- "Create from Video" UI flow in `RecipeFormPage`
-- `sourceUrl` / `source` fields on the `Recipe` entity
+#### Scenario: Extraction fails
+- **WHEN** transcription/parsing succeeds but recipe extraction fails
+- **THEN** the server responds with a structured error mapped from `RecipeExtractionException`
+- **AND THEN** no recipe is persisted
 
-### Why deferred
+### Requirement: Imported drafts include source provenance
+The system SHALL include source provenance in import results so clients can preserve recipe origin.
 
-Removing the AI pipeline allows the `recipes-feature` change to focus on delivering stable, testable CRUD without any external API dependencies (yt-dlp, AssemblyAI, Gemini). The AI pipeline will be re-introduced as a standalone capability once basic recipe management is working end-to-end.
-
-### Re-introduction notes (for the future change author)
-
-- `sourceUrl` and `source` are **not** on the `recipes` table in this iteration. A DB migration will be required to add them back.
-- The `StorageService` interface (if introduced for image uploads) can serve as a pattern for the pipeline's `VideoDownloader`.
-- The `AppException` hierarchy should be extended with `VideoDownloadException`, `TranscriptionException`, and `RecipeExtractionException` in the follow-up change.
+#### Scenario: Draft includes source metadata
+- **WHEN** the import endpoint returns a draft
+- **THEN** the payload includes `sourceUrl`
+- **AND THEN** the payload includes a normalized `source` value identifying the source type or provider
