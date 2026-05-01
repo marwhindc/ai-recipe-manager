@@ -39,7 +39,7 @@ export default function AppShell({ children }) {
             aria-label="Add recipe"
             className="absolute right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-paprika text-white shadow-lg shadow-paprika/30 transition hover:scale-105 active:scale-95"
             onClick={() => setSheetOpen(true)}
-            style={{ bottom: hideTabs ? 24 : 84 }}
+            style={{ bottom: hideTabs ? 24 : 96 }}
             type="button"
           >
             <Plus size={24} strokeWidth={2.5} />

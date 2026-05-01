@@ -13,28 +13,29 @@ export default function BottomNav() {
   const { pathname } = useLocation()
 
   return (
-    <nav
-      className="z-50 border-t border-black/5 bg-white/95 backdrop-blur-md"
-    >
-      <ul className="mx-auto flex max-w-[440px] items-center justify-between px-6 pt-3">
+    <nav className="z-50 border-t border-black/5 bg-white/95 backdrop-blur-md">
+      <ul className="mx-auto flex max-w-[440px] items-center justify-between px-4 pt-4 pb-3">
         {tabs.map(({ href, label, Icon, match }) => {
           const isActive = match(pathname)
 
           return (
             <li className="min-w-0 flex-1" key={href}>
               <Link
-                className={`flex flex-col items-center gap-1 transition-colors duration-200 ${
-                  isActive ? 'text-paprika' : 'text-espresso/60 hover:text-espresso'
+                className={`flex flex-col items-center gap-1.5 transition-colors duration-200 ${
+                  isActive ? 'text-paprika' : 'text-espresso/50 hover:text-espresso'
                 }`}
                 to={href}
               >
-                <div className={`relative transition-transform ${isActive ? 'scale-110' : ''}`}>
-                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                  {isActive && (
-                    <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-paprika" />
-                  )}
+                <div
+                  className={`relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200 ${
+                    isActive ? 'bg-paprika/10 scale-105' : ''
+                  }`}
+                >
+                  <Icon size={26} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
-                <span className="mt-1 text-[10px] font-semibold">{label}</span>
+                <span className={`text-[10px] font-semibold tracking-wide ${
+                  isActive ? 'opacity-100' : 'opacity-70'
+                }`}>{label}</span>
               </Link>
             </li>
           )
