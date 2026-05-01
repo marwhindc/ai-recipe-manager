@@ -16,7 +16,7 @@ The AI Recipe Manager needs a foundational Recipes feature so that users can sto
 The following features are planned but **not** part of this change:
 - **AI Video Pipeline** – importing recipes from video URLs via yt-dlp / AssemblyAI / Gemini. Deferred to a dedicated follow-up change.
 - **Supabase JWT Auth** – full JWT validation, JWKS, and RLS enforcement. Replaced by HTTP Basic Auth stub for now.
-- **Image upload** – direct file upload to Supabase Storage. The `imageUrl` field accepts a URL string; real upload support is a follow-up.
+- **Image upload** – direct file upload to Supabase Storage is out of scope. The app supports URL paste plus client-side camera/gallery import that is stored as `imageUrl` (base64 data URL or remote URL).
 - **Collections** – grouping recipes into curated sets.
 - **Grocery** – generating or managing shopping / to-do lists.
 - **Discover** – browsing/searching other users' recipes or external sources.
@@ -47,7 +47,7 @@ The following features are planned but **not** part of this change:
 **Frontend**
 - New Vite + React project under `/frontend` with Tailwind CSS; feature-based folder layout under `src/features/recipes/`.
 - Mobile-first responsive layout inspired by Flavorish (warm, card-based aesthetic).
-- `imageUrl` is a plain text input; no Supabase Storage integration yet.
+- `imageUrl` is stored as text and can be set by URL paste or client-side camera/gallery import; no Supabase Storage integration yet.
 - Environment variable for backend API base URL only (`VITE_API_BASE_URL`).
 
 ## Open Questions

@@ -42,7 +42,7 @@
 - [x] 5.4 Create shared `Modal` / `ConfirmDialog` component
 - [x] 5.5 Create shared `Spinner` / `LoadingOverlay` component
 - [x] 5.6 Create shared `BottomNav` (mobile) component with tab icons for Recipes, Collections, Grocery, Discover, Profile — Recipes is the only active route for now
-- [x] 5.7 Set up React Router v6 in `App.jsx` with routes: `/`, `/recipes`, `/recipes/new`, `/recipes/:id`, `/recipes/:id/edit`
+- [x] 5.7 Set up React Router v6 in `App.jsx` with canonical routes: `/`, `/recipe/new`, `/recipe/:id`, `/recipe/:id/edit`; keep legacy redirects for `/recipes`, `/recipes/new`, `/recipes/:id`, `/recipes/:id/edit`
 
 ## 6. Frontend — Recipes Feature
 
@@ -50,7 +50,7 @@
 - [x] 6.2 Implement `useRecipes` hook: fetches recipe list, exposes loading/error states
 - [x] 6.3 Implement `useRecipeForm` hook: manages form state, validation, submit handler for both create and edit modes
 - [x] 6.4 Build `RecipeCard` component: image (with placeholder fallback for missing `imageUrl`), title, cuisine badge, total time chip, tappable link to detail page
-- [x] 6.5 Build `RecipeListPage`: fetch and render `RecipeCard` grid; empty state with CTA; FAB (floating action button) to navigate to `/recipes/new`
+- [x] 6.5 Build `RecipeListPage`: fetch and render `RecipeCard` grid; empty state with CTA; FAB (floating action button) to navigate to `/recipe/new`
 - [x] 6.6 Build `RecipeDetailPage`: display all recipe fields; sticky header with back button, edit button, delete button; render ingredient list and numbered steps
 - [x] 6.7 Build `RecipeFormPage` (create + edit modes): form fields for title, description, ingredients, steps, cuisine, servings, prep/cook time, and cover photo; cover photo supports gallery upload, camera capture (client-side resize/compress to base64 via canvas), and URL paste; edit mode pre-populates all fields
 - [x] 6.8 Add delete confirmation modal to `RecipeDetailPage` using the shared `ConfirmDialog` component

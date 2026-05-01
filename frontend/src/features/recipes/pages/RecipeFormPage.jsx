@@ -77,14 +77,7 @@ export default function RecipeFormPage() {
         <h1 className="font-display text-lg text-espresso">
           {isEdit ? 'Edit Recipe' : 'New Recipe'}
         </h1>
-        <button
-          className="px-2 text-sm font-semibold text-paprika disabled:opacity-50"
-          disabled={saving}
-          form="recipe-form"
-          type="submit"
-        >
-          Save
-        </button>
+        <div aria-hidden="true" className="h-10 w-10" />
       </div>
 
       <form className="space-y-5" id="recipe-form" onSubmit={submit}>

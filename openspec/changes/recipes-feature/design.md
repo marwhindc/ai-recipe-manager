@@ -156,11 +156,16 @@ All endpoints require HTTP Basic Auth (`Authorization: Basic <base64(user:passwo
 ### 5. Frontend Routing & Pages
 
 ```
-/                     → redirect to /recipes
-/recipes              → RecipeListPage    (grid of RecipeCard components)
-/recipes/new          → RecipeFormPage    (create mode)
-/recipes/:id          → RecipeDetailPage  (full recipe view)
-/recipes/:id/edit     → RecipeFormPage    (edit mode)
+/                     → RecipeListPage    (grid of RecipeCard components)
+/recipe/new           → RecipeFormPage    (create mode)
+/recipe/:id           → RecipeDetailPage  (full recipe view)
+/recipe/:id/edit      → RecipeFormPage    (edit mode)
+
+# Legacy compatibility redirects
+/recipes              → /
+/recipes/new          → /recipe/new
+/recipes/:id          → /recipe/:id
+/recipes/:id/edit     → /recipe/:id/edit
 ```
 
 ---
@@ -220,14 +225,16 @@ Spring Boot (JPA / Hibernate)
 
 ### 8. Image Handling
 
-Images are referenced by URL only. The `image_url` column stores a plain text URL string. Users paste any publicly accessible image URL into the form.
+Images are stored in the `image_url` text column as either a remote URL or a base64 data URL generated client-side.
 
 ```
-User pastes URL into imageUrl field
+User chooses image input method (Upload, Camera, or URL)
       │
+  If file input is used, frontend resizes/compresses client-side and converts to base64 data URL
+    │
   Frontend sends imageUrl in POST /recipes or PUT /recipes/{id}
       │
-  Backend stores string in image_url column
+  Backend stores text value in image_url column
       │
   Frontend renders <img src={imageUrl} /> with a placeholder fallback
 ```
@@ -239,7 +246,7 @@ User pastes URL into imageUrl field
 | Question | Decision |
 |---|---|
 | Auth | HTTP Basic Auth (Spring Security in-memory user) |
-| Image handling | Plain `imageUrl` string field |
+| Image handling | `imageUrl` text field supporting remote URL or client-generated base64 data URL |
 | Data access | Spring Data JPA + JDBC (direct Postgres connection) |
 | Ownership enforcement | Service-layer `userId` filter (`findByIdAndUserId`) |
 

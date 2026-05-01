@@ -1,4 +1,9 @@
-## ADDED Requirements
+# Capability: recipe-crud
+
+## Purpose
+Define manual recipe CRUD behavior across backend API and frontend recipe pages.
+
+## Requirements
 
 ### Requirement: User can create a recipe manually
 The system SHALL allow an authenticated user to create a recipe by submitting a JSON body to `POST /api/v1/recipes`. The response SHALL include the persisted recipe with a server-generated UUID and timestamps.

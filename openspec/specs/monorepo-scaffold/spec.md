@@ -1,4 +1,9 @@
-## ADDED Requirements
+# Capability: monorepo-scaffold
+
+## Purpose
+Define and maintain the monorepo baseline for frontend and backend development workflows.
+
+## Requirements
 
 ### Requirement: Monorepo skeleton is initialised
 The system SHALL provide a single Git repository containing both `/frontend` and `/backend` sub-projects, each with their own package manager / build tool configuration, so that developers can work on either project from one clone.
