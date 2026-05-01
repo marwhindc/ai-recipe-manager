@@ -31,18 +31,23 @@ export default function LoginPage() {
       <div className="relative w-full max-w-xs flex flex-col items-center gap-8">
         {/* App icon */}
         <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-saffron to-paprika flex items-center justify-center shadow-lg shadow-paprika/20">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 11l19-9-9 19-2-8-8-2z" />
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+            {/* Bowl with steam — table / gathering motif */}
+            <path d="M4 11 C4 16.5 20 16.5 20 11" />
+            <line x1="12" y1="11" x2="12" y2="17" />
+            <line x1="4" y1="19" x2="20" y2="19" />
+            <path d="M9 7 C9 5 10 4 10 3" />
+            <path d="M13 7 C13 5 14 4 14 3" />
           </svg>
         </div>
 
         {/* Wordmark + tagline */}
         <div className="text-center space-y-1.5">
           <h1 className="font-display text-4xl font-bold tracking-tight text-espresso">
-            Saffron
+            Hapag
           </h1>
           <p className="font-sans text-sm text-taupe">
-            Your personal recipe collection
+            Gather. Cook. Remember.
           </p>
         </div>
 

@@ -50,7 +50,7 @@ export default function RecipeListPage() {
   return (
     <main className="px-6 pb-28 pt-6 space-y-6">
       <header className="flex items-center justify-between">
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-espresso">Saffron</h1>
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-espresso">Hapag</h1>
         <Link
           className="h-10 w-10 overflow-hidden rounded-full border border-linen bg-parchment flex items-center justify-center"
           to="/profile"
