@@ -275,7 +275,7 @@ export default function RecipeDetailPage() {
         )}
       </AnimatePresence>
 
-      <LoadingOverlay show={loading} />
+      <LoadingOverlay show={deleting} />
     </div>
   )
 }
