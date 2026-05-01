@@ -6,6 +6,10 @@ import RecipeDetailPage from './features/recipes/pages/RecipeDetailPage'
 import RecipeFormPage from './features/recipes/pages/RecipeFormPage'
 import RecipeImportPage from './features/recipes/pages/RecipeImportPage'
 import RecipeListPage from './features/recipes/pages/RecipeListPage'
+import { AuthProvider } from './features/user-auth/AuthContext'
+import LoginPage from './features/user-auth/LoginPage'
+import ProtectedRoute from './features/user-auth/ProtectedRoute'
+import ProfilePage from './features/user-profile/ProfilePage'
 import AppShell from './shared/components/AppShell'
 
 function LegacyRecipeDetailRedirect() {
@@ -31,16 +35,16 @@ function AnimatedRoutes() {
         transition={{ duration: 0.2 }}
       >
         <Routes location={location}>
-          <Route element={<RecipeListPage />} path="/" />
-          <Route element={<RecipeFormPage />} path="/recipe/new" />
-          <Route element={<RecipeImportPage />} path="/recipe/import" />
-          <Route element={<RecipeDetailPage />} path="/recipe/:id" />
-          <Route element={<RecipeFormPage />} path="/recipe/:id/edit" />
+          <Route element={<ProtectedRoute><RecipeListPage /></ProtectedRoute>} path="/" />
+          <Route element={<ProtectedRoute><RecipeFormPage /></ProtectedRoute>} path="/recipe/new" />
+          <Route element={<ProtectedRoute><RecipeImportPage /></ProtectedRoute>} path="/recipe/import" />
+          <Route element={<ProtectedRoute><RecipeDetailPage /></ProtectedRoute>} path="/recipe/:id" />
+          <Route element={<ProtectedRoute><RecipeFormPage /></ProtectedRoute>} path="/recipe/:id/edit" />
 
-          <Route element={<ComingSoonPage title="Collections" />} path="/collections" />
-          <Route element={<ComingSoonPage title="Grocery" />} path="/grocery" />
-          <Route element={<ComingSoonPage title="Discover" />} path="/discover" />
-          <Route element={<ComingSoonPage title="Profile" />} path="/profile" />
+          <Route element={<ProtectedRoute><ComingSoonPage title="Collections" /></ProtectedRoute>} path="/collections" />
+          <Route element={<ProtectedRoute><ComingSoonPage title="Grocery" /></ProtectedRoute>} path="/grocery" />
+          <Route element={<ProtectedRoute><ComingSoonPage title="Discover" /></ProtectedRoute>} path="/discover" />
+          <Route element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} path="/profile" />
 
           <Route element={<Navigate replace to="/" />} path="/recipes" />
           <Route element={<Navigate replace to="/recipe/new" />} path="/recipes/new" />
@@ -55,10 +59,18 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <>
-      <AppShell>
-        <AnimatedRoutes />
-      </AppShell>
+    <AuthProvider>
+      <Routes>
+        <Route element={<LoginPage />} path="/login" />
+        <Route
+          path="/*"
+          element={
+            <AppShell>
+              <AnimatedRoutes />
+            </AppShell>
+          }
+        />
+      </Routes>
       <Toaster
         position="top-center"
         richColors
@@ -69,7 +81,7 @@ function App() {
           }
         }}
       />
-    </>
+    </AuthProvider>
   )
 }
 

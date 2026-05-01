@@ -4,12 +4,14 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard'
 import { useRecipes } from '../hooks/useRecipes'
-
-const PROFILE_PHOTO =
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80'
+import { useAuth } from '../../user-auth/AuthContext'
 
 export default function RecipeListPage() {
   const { recipes, total, loading, error, refresh } = useRecipes()
+  const { user } = useAuth()
+  const initials = user?.displayName
+    ? user.displayName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+    : '?'
   const [query, setQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState('All')
 
@@ -50,14 +52,18 @@ export default function RecipeListPage() {
       <header className="flex items-center justify-between">
         <h1 className="font-display text-3xl font-semibold tracking-tight text-espresso">Saffron</h1>
         <Link
-          className="h-10 w-10 overflow-hidden rounded-full border border-linen bg-parchment"
+          className="h-10 w-10 overflow-hidden rounded-full border border-linen bg-parchment flex items-center justify-center"
           to="/profile"
         >
-          <img
-            alt="Profile"
-            className="h-full w-full object-cover"
-            src={PROFILE_PHOTO}
-          />
+          {user?.avatarUrl ? (
+            <img
+              alt="Profile"
+              className="h-full w-full object-cover"
+              src={user.avatarUrl}
+            />
+          ) : (
+            <span className="text-xs font-semibold text-taupe">{initials}</span>
+          )}
         </Link>
       </header>
 

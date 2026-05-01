@@ -6,9 +6,26 @@ spring:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/recipes}
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:admin}
+  flyway:
+    baseline-on-migrate: true
+    baseline-version: 0
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
         default_schema: public
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:local-client-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:local-client-secret}
+
+app:
+  cookie:
+    secure: false
+  base-url: http://localhost:8080
+  jwt:
+    secret: bG9jYWwtZGV2LXNlY3JldC1ub3QtZm9yLXByb2R1Y3Rpb24tdXNlLW9ubHk

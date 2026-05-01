@@ -6,6 +6,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.recipemanager.auth.api.OAuth2FailureHandler;
+import com.recipemanager.auth.api.OAuth2SuccessHandler;
+import com.recipemanager.auth.application.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recipemanager.common.exception.RecipeExtractionException;
 import com.recipemanager.common.exception.TranscriptionException;
@@ -19,11 +22,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(VideoImportController.class)
 @WithMockUser
+@TestPropertySource(properties = {
+    "app.jwt.secret=dGVzdEp3dFNlY3JldEtleUZvclVuaXRUZXN0aW5nUHVycG9zZXM=",
+    "app.cookie.secure=false",
+    "spring.security.oauth2.client.registration.google.client-id=test-id",
+    "spring.security.oauth2.client.registration.google.client-secret=test-secret"
+})
 class VideoImportControllerTest {
 
     @Autowired
@@ -34,6 +44,15 @@ class VideoImportControllerTest {
 
     @MockitoBean
     private VideoImportOrchestrator orchestrator;
+
+    @MockitoBean
+    private OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    @MockitoBean
+    private OAuth2FailureHandler oAuth2FailureHandler;
+
+    @MockitoBean
+    private JwtService jwtService;
 
     private static final String URL = "/api/v1/recipes/import/video";
     private static final String SOURCE_URL = "https://www.youtube.com/watch?v=test123";

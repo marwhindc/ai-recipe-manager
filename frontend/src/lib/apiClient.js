@@ -1,11 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-const BASIC_AUTH_USER = 'dev'
-const BASIC_AUTH_PASSWORD = 'secret'
-
-function buildAuthHeader() {
-  return `Basic ${btoa(`${BASIC_AUTH_USER}:${BASIC_AUTH_PASSWORD}`)}`
-}
+let isRefreshing = false
 
 function toQueryString(query = {}) {
   const params = new URLSearchParams()
@@ -18,6 +13,22 @@ function toQueryString(query = {}) {
   return qs ? `?${qs}` : ''
 }
 
+async function tryRefresh() {
+  if (isRefreshing) return false
+  isRefreshing = true
+  try {
+    const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+    return res.ok
+  } catch {
+    return false
+  } finally {
+    isRefreshing = false
+  }
+}
+
 export async function apiRequest(path, options = {}) {
   if (!API_BASE_URL) {
     throw new Error('Missing VITE_API_BASE_URL environment variable')
@@ -25,13 +36,39 @@ export async function apiRequest(path, options = {}) {
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method: options.method ?? 'GET',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: buildAuthHeader(),
       ...(options.headers ?? {})
     },
     body: options.body ? JSON.stringify(options.body) : undefined
   })
+
+  if (response.status === 401 && path !== '/auth/refresh' && path !== '/auth/me') {
+    const refreshed = await tryRefresh()
+    if (refreshed) {
+      const retry = await fetch(`${API_BASE_URL}${path}`, {
+        method: options.method ?? 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers ?? {})
+        },
+        body: options.body ? JSON.stringify(options.body) : undefined
+      })
+      if (retry.status === 401) {
+        window.location.href = '/login'
+        throw new Error('Session expired')
+      }
+      if (retry.status === 204) return null
+      const retryPayload = await retry.json().catch(() => null)
+      if (!retry.ok) throw new Error(retryPayload?.message ?? 'Request failed')
+      return retryPayload
+    } else {
+      window.location.href = '/login'
+      throw new Error('Session expired')
+    }
+  }
 
   if (response.status === 204) {
     return null

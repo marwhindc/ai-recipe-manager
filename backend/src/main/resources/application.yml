@@ -18,13 +18,29 @@ spring:
   sql:
     init:
       mode: never
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: openid, email, profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
 
 server:
   port: ${PORT:8080}
 
 app:
   frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  base-url: ${APP_BASE_URL:http://localhost:8080}
+  cookie:
+    secure: true
+  jwt:
+    secret: ${JWT_SECRET}
+    access-ttl-minutes: ${JWT_ACCESS_TTL_MINUTES:15}
+    refresh-ttl-days: ${JWT_REFRESH_TTL_DAYS:30}
   videoimport:
     ytdlp-path: ${YTDLP_PATH:${user.dir}/bin/yt-dlp.exe}
-    assemblyai-api-key: ${ASSEMBLYAI_API_KEY:e1918ed6089541689c9b55017fe55754}
-    gemini-api-key: ${GEMINI_API_KEY:AIzaSyBa4M5iUNaZHEbz0dnMK6iA4s5cYbD6Hjg}
+    assemblyai-api-key: ${ASSEMBLYAI_API_KEY}
+    gemini-api-key: ${GEMINI_API_KEY}

@@ -1,6 +1,5 @@
 package com.recipemanager.common.auth;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +7,6 @@ import org.springframework.stereotype.Component;
 public class AuthUserIdResolver {
 
     public UUID resolveUserId(String principalName) {
-        return UUID.nameUUIDFromBytes(principalName.getBytes(StandardCharsets.UTF_8));
+        return UUID.fromString(principalName);
     }
 }
