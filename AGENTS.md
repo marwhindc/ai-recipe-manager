@@ -1,12 +1,197 @@
-# AI Agent Instructions (AGENTS.md)
+# AGENTS.md
 
-Welcome! You are an AI agent working on the AI Recipe Manager monorepo. Please adhere strictly to the following guidelines and conventions when making changes, writing code, or creating commits in this repository.
+Agent instructions for the AI Recipe Manager monorepo.
 
-## 1. Commit Message Standard
+Closest file wins: when working in a subproject, prefer that directory's `AGENTS.md` over this root file.
 
-We follow a strict **Conventional Commits** approach, enhanced with detailed descriptions in paragraph form. 
+## Project Overview
 
-### Format
+AI Recipe Manager is a mobile-first monorepo for creating, editing, and managing recipes.
+
+- Frontend: React 18 + Vite + Tailwind CSS (`frontend/`)
+- Backend: Java 21 + Spring Boot 3 + Spring Data JPA (`backend/`)
+- Database: PostgreSQL (Supabase or local)
+- Architectural style:
+  - Frontend uses feature-based folders (`src/features/<feature>/...`)
+  - Backend uses domain-driven feature packages (`com.recipemanager.<feature>.*`)
+
+## Monorepo Layout
+
+- `frontend/`: Vite app, mobile-first UI, shared UI atoms in `src/shared/components/`
+- `backend/`: REST API, recipe domain and auth/exception common modules
+- `mockups/`: visual references
+- `openspec/`: proposals, design docs, specs, and implementation tasks
+
+## Setup Commands
+
+### Prerequisites
+
+- Java 21
+- Node.js 20+
+- npm 10+
+- PostgreSQL (Supabase or local)
+- Maven 3.9+ available in shell `PATH`
+
+### Frontend setup
+
+```bash
+cd frontend
+npm install
+```
+
+### Backend setup
+
+```bash
+cd backend
+mvn -v
+```
+
+Note for Windows: if `mvn` is not available in PowerShell but works in Git Bash, run backend commands from Git Bash.
+
+## Environment Configuration
+
+Keep secrets in environment variables or `.env` files that are gitignored.
+
+### Backend environment variables
+
+- `DB_URL`
+- `DB_USER`
+- `DB_PASSWORD`
+- `FRONTEND_ORIGIN` (optional, defaults to `http://localhost:5173`)
+- `PORT` (optional, defaults to `8080`)
+
+Backend config files:
+
+- `backend/src/main/resources/application.yml`
+- `backend/src/main/resources/application-local.yml`
+
+### Frontend environment variables
+
+- `VITE_API_BASE_URL` (required by `src/lib/apiClient.js`)
+
+The frontend throws a startup/runtime error if `VITE_API_BASE_URL` is missing.
+
+## Development Workflow
+
+### Start frontend
+
+```bash
+cd frontend
+npm run dev
+```
+
+### Start backend
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+Backend local auth currently uses HTTP Basic with a dev account:
+
+- username: `dev`
+- password: `secret`
+
+Core API route:
+
+- `/api/v1/recipes`
+
+Health endpoint:
+
+- `/actuator/health`
+
+## Testing Instructions
+
+### Backend tests
+
+Run all backend tests:
+
+```bash
+cd backend
+mvn test
+```
+
+Run a single backend test class:
+
+```bash
+cd backend
+mvn -Dtest=RecipeServiceImplTest test
+```
+
+Backend tests live under `backend/src/test/java`.
+
+### Frontend checks
+
+Run linting:
+
+```bash
+cd frontend
+npm run lint
+```
+
+Current status: lint command exists and runs, but the repository may contain existing lint violations. Do not assume a clean lint baseline unless you fixed/verified it in your branch.
+
+## Code Style and Conventions
+
+### Global rules
+
+- Do not add new dependencies without explicit user approval.
+- Keep comments and documentation unless explicitly asked to remove them.
+- Prefer small, focused changes over broad refactors.
+
+### Frontend conventions
+
+- Keep feature code in `src/features/<feature>/`.
+- Keep shared building blocks in `src/shared/components/`.
+- Keep API helpers in `src/lib/`.
+- Reuse existing shared components before creating duplicates.
+- Build mobile-first layouts before desktop refinements.
+
+### Backend conventions
+
+- Keep feature packages split by `api`, `application`, `domain`, `infrastructure`.
+- Return RESTful JSON responses.
+- Use UUIDs for identifiers.
+- Keep cross-cutting concerns in `com.recipemanager.common`.
+
+## Database and Migrations
+
+- Migration SQL: `backend/src/main/resources/db/migration/V1__create_recipes_table.sql`
+- Recipe ingredients and steps are stored as JSONB.
+- Recipe IDs are UUIDs (`gen_random_uuid()` in Postgres).
+
+## Build and Packaging
+
+### Frontend build
+
+```bash
+cd frontend
+npm run build
+```
+
+Build output: `frontend/dist/`
+
+### Backend build
+
+```bash
+cd backend
+mvn clean package
+```
+
+Build outputs are generated under `backend/target/`.
+
+## Security Notes
+
+- Never commit secrets or `.env` files.
+- Keep CORS origin aligned with `FRONTEND_ORIGIN`.
+- Local Basic Auth credentials are for development only.
+
+## Pull Request and Commit Guidance
+
+Use Conventional Commits with paragraph-form body.
+
+Format:
+
 ```text
 <type>(<optional scope>): <subject>
 
@@ -15,43 +200,25 @@ We follow a strict **Conventional Commits** approach, enhanced with detailed des
 <why>
 ```
 
-### Rules
-- **Type**: Must be one of `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, or `revert`.
-- **Subject**: A short, imperative-mood description of the change (e.g., "add basic auth stub", "refactor recipe service"). Do not capitalize the first letter. No period at the end.
-- **Body / Description**: 
-  - Must be written in **paragraph form**.
-  - **What/How**: Detail exactly what was changed and how the implementation works. Mention architectural decisions, patterns used, or notable code changes.
-  - **Why**: Explain the reasoning behind the change. Why is this necessary? What problem does it solve?
+Rules:
 
-### Example
-```text
-feat(backend): implement recipe entity and crud service
+- `type` must be one of: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
+- Subject is imperative, lowercase start, no trailing period
+- Body must explain both implementation details (what/how) and rationale (why)
 
-Added the `Recipe` aggregate root along with the `RecipeService` interface and its implementation. The service layer handles standard CRUD operations, connecting to the Supabase PostgreSQL database via Spring Data JPA. We also mapped the ingredients and steps to JSONB columns to avoid complex join tables for the MVP.
+Before opening a PR, run what applies to your changes:
 
-This foundational domain model is necessary to allow users to store and manage their recipes digitally. By establishing the service layer now, we create a stable base upon which we can layer the AI video pipeline and social features in subsequent updates.
-```
+- `cd frontend && npm run lint`
+- `cd frontend && npm run build`
+- `cd backend && mvn test`
 
-## 2. Tech Stack & Architecture
+## Troubleshooting
 
-This is a monorepo containing both the frontend and backend applications.
-
-- **Frontend (`/frontend`)**:
-  - React 18, Vite, and Tailwind CSS.
-  - Follow a **feature-based folder structure** (`src/features/...`), NOT component-based. Keep UI, hooks, and services co-located within their bounded context.
-  - Design aesthetic: Flavorish-inspired – warm, appetising, mobile-first, clean cards.
-
-- **Backend (`/backend`)**:
-  - Java 21 and Spring Boot 3.
-  - Follow **CLEAN code standards** and **Domain-Driven Design (DDD)**.
-  - Package structure should be feature-based / domain-driven (e.g., `com.recipemanager.recipes.domain`).
-  - All API endpoints must be RESTful JSON.
-  - Use UUIDs for public/internal IDs instead of exposing auto-incrementing integers.
-
-- **Database / Infrastructure**:
-  - Supabase (PostgreSQL). 
-
-## 3. General Rules
-
-- **Dependencies**: Do NOT add new dependencies without explicit user approval. Suggest them first.
-- **Code Style**: Maintain high-quality, readable code. Do not remove comments or documentation unless explicitly instructed.
+- `mvn: command not found` in PowerShell:
+  - Use Git Bash if Maven is installed there, or add Maven to system `PATH`.
+- Frontend request failures at startup:
+  - Confirm `VITE_API_BASE_URL` is set.
+- CORS issues:
+  - Confirm `FRONTEND_ORIGIN` matches your frontend dev origin.
+- Database connectivity issues:
+  - Verify `DB_URL`, `DB_USER`, and `DB_PASSWORD` and that Postgres is reachable.
