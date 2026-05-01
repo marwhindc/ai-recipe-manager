@@ -1,5 +1,6 @@
 import { Clock3 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import SourceBadge from './SourceBadge'
 
 const PLACEHOLDER_IMAGE =
   'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80'
@@ -27,8 +28,11 @@ export default function RecipeCard({ recipe }) {
             <Clock3 size={12} />
             <span>{totalTime}m</span>
           </div>
-          {recipe.cuisine && <span>{recipe.cuisine}</span>}
-        </div>
+          {recipe.cuisine && <span>{recipe.cuisine}</span>}          {(recipe.source || recipe.sourceUrl) && (
+            <span className="ml-auto">
+              <SourceBadge source={recipe.source} sourceUrl={recipe.sourceUrl} variant="icon" />
+            </span>
+          )}        </div>
       </div>
     </Link>
   )

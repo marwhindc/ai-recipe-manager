@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { deleteRecipe, getRecipe } from '../services/recipeService'
 import ConfirmDialog from '../../../shared/components/ConfirmDialog'
 import LoadingOverlay from '../../../shared/components/LoadingOverlay'
+import SourceBadge from '../components/SourceBadge'
 
 const PLACEHOLDER_IMAGE =
   'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80'
@@ -137,11 +138,16 @@ export default function RecipeDetailPage() {
 
         {recipe && (
           <>
-            {recipe.cuisine && (
-              <p className="inline-block rounded-full bg-paprika/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-paprika">
-                {recipe.cuisine}
-              </p>
-            )}
+            <div className="flex items-center justify-between gap-3">
+              {recipe.cuisine && (
+                <p className="inline-block rounded-full bg-paprika/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-paprika">
+                  {recipe.cuisine}
+                </p>
+              )}
+              {(recipe.source || recipe.sourceUrl) && (
+                <SourceBadge source={recipe.source} sourceUrl={recipe.sourceUrl} variant="pill" />
+              )}
+            </div>
 
             <h1 className="font-display text-3xl leading-tight text-espresso">{recipe.title}</h1>
 
@@ -177,8 +183,8 @@ export default function RecipeDetailPage() {
               </div>
               <div className="divide-y divide-linen">
                 {(recipe.ingredients || []).map((item, idx) => (
-                  <div key={`${item.name}-${idx}`} className="flex items-baseline gap-4 py-3">
-                    <span className="w-20 shrink-0 text-sm font-semibold text-paprika">
+                  <div key={`${item.name}-${idx}`} className="grid grid-cols-[8rem_1fr] items-baseline gap-4 py-3">
+                    <span className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold text-paprika">
                       {item.quantity
                         ? `${item.quantity}${item.unit ? ' ' + item.unit : ''}`
                         : '—'}

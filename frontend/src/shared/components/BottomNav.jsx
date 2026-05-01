@@ -14,8 +14,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="absolute bottom-0 left-0 right-0 z-50 border-t border-black/5 bg-white/95 backdrop-blur-md"
-      style={{ paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 12px)' }}
+      className="z-50 border-t border-black/5 bg-white/95 backdrop-blur-md"
     >
       <ul className="mx-auto flex max-w-[440px] items-center justify-between px-6 pt-3">
         {tabs.map(({ href, label, Icon, match }) => {

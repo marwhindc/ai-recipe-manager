@@ -22,10 +22,14 @@ export default function AppShell({ children }) {
 
   return (
     <div className="app-backdrop">
-      <div className="app-column flex min-h-screen flex-col">
+      <div className="app-column flex flex-col">
         <main
-          className={`no-scrollbar flex-1 overflow-x-hidden overflow-y-auto ${hideTabs ? 'pb-6' : 'pb-28'}`}
-          style={{ WebkitOverflowScrolling: 'touch' }}
+          className={`no-scrollbar flex-1 overflow-x-hidden overflow-y-auto ${hideTabs ? 'pb-6' : ''}`}
+          style={{
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain',
+            paddingBottom: hideTabs ? undefined : 'calc(7rem + env(safe-area-inset-bottom, 0px))',
+          }}
         >
           {children}
         </main>
@@ -42,7 +46,13 @@ export default function AppShell({ children }) {
           </button>
         )}
 
-        {!hideTabs && <BottomNav />}
+        {!hideTabs && (
+          <>
+            <BottomNav />
+            {/* Safe area spacer — fills the gap below the nav on phones with home indicator / gesture bar */}
+            <div className="bg-white/95" style={{ height: 'env(safe-area-inset-bottom, 0px)' }} />
+          </>
+        )}
 
         <AddRecipeSheet onOpenChange={setSheetOpen} open={sheetOpen} />
       </div>

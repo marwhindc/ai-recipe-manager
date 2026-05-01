@@ -47,7 +47,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(frontendOrigin));
+        // Allow the configured origin plus any LAN IP on the same port (for mobile testing)
+        String port = frontendOrigin.replaceAll(".*:(\\d+)$", "$1");
+        config.setAllowedOriginPatterns(List.of(frontendOrigin, "http://192.168.*.*:" + port, "http://10.*.*.*:" + port));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
