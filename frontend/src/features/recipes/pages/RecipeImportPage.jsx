@@ -88,7 +88,7 @@ export default function RecipeImportPage() {
           </p>
         </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" noValidate onSubmit={handleSubmit}>
           <div>
             <label className="sr-only" htmlFor="source-url">Recipe URL</label>
             <input

@@ -70,6 +70,9 @@ Constraints:
 
 ## Open Questions
 
-- Should the import endpoint accept only video links, or any web recipe link with dynamic strategy selection?
-- What maximum source duration/content size is acceptable for synchronous import requests?
+- ~~Should the import endpoint accept only video links, or any web recipe link with dynamic strategy selection?~~
+  **Resolved**: The endpoint accepts any URL but delegates entirely to `yt-dlp`, which supports YouTube, Facebook (`fb.watch`, `facebook.com`), and many other video platforms. A `source` field derived at import time records the provider type (`youtube`, `facebook`, or `web`). Non-video web pages are a best-effort case: if `yt-dlp` can extract audio, the pipeline proceeds; otherwise a `VideoDownloadException` is returned. Dynamic strategy selection (e.g., direct HTML scraping vs. audio extraction) is deferred.
+- ~~What maximum source duration/content size is acceptable for synchronous import requests?~~
+  **Resolved (provisional)**: No hard limit is enforced in the current implementation. The AssemblyAI polling loop runs up to 60 × 5 s (5 minutes). The UI presents a "This can take up to a minute" notice. A formal timeout policy and max-duration guard will be introduced if production performance data warrants it.
 - Which `yt-dlp`, AssemblyAI, and Gemini credentials, binaries, and rate limits are available for local vs production environments?
+  **Resolved**: `yt-dlp` binary path is configurable via `YTDLP_PATH` (defaults to `yt-dlp` on `$PATH`). API keys are configured via `ASSEMBLYAI_API_KEY` and `GEMINI_API_KEY` environment variables documented in `backend/AGENTS.md`. Local dev uses the same keys via `.env` / `application-local.yml`.

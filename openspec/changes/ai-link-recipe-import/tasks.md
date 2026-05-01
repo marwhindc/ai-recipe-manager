@@ -25,7 +25,7 @@
 - [x] 4.2 Implement client-side URL validation and import API call in recipes feature API layer
 - [x] 4.3 Hydrate `RecipeFormPage` with imported draft values and preserve user edits before save
 - [x] 4.4 Show stage-aware import error states with retry support
-- [ ] 4.5 Add frontend tests for URL validation, successful form hydration, and failure handling
+- [x] 4.5 Add frontend tests for URL validation, successful form hydration, and failure handling
 
 ## 5. End-to-End Validation and Documentation
 

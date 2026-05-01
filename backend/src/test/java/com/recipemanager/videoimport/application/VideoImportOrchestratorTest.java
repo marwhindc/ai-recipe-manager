@@ -153,6 +153,17 @@ class VideoImportOrchestratorTest {
     }
 
     @Test
+    void detectsFbWatchSource() throws IOException {
+        Path tempFile = Files.createTempFile("test-audio", ".mp3");
+        when(downloader.download(anyString())).thenReturn(tempFile);
+        when(transcriber.transcribe(any())).thenReturn("text");
+        when(extractor.extract(anyString())).thenReturn(buildDraft());
+
+        RecipeDraftResponse response = orchestrator.importFromLink("https://fb.watch/abcXYZ123/");
+        assertEquals("facebook", response.source());
+    }
+
+    @Test
     void detectsWebSourceForNonYouTube() throws IOException {
         Path tempFile = Files.createTempFile("test-audio", ".mp3");
         when(downloader.download(anyString())).thenReturn(tempFile);
