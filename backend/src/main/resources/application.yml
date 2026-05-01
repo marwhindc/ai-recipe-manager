@@ -41,6 +41,6 @@ app:
     access-ttl-minutes: ${JWT_ACCESS_TTL_MINUTES:15}
     refresh-ttl-days: ${JWT_REFRESH_TTL_DAYS:30}
   videoimport:
-    ytdlp-path: ${YTDLP_PATH:${user.dir}/bin/yt-dlp.exe}
+    ytdlp-path: ${YTDLP_PATH:/usr/local/bin/yt-dlp}
     assemblyai-api-key: ${ASSEMBLYAI_API_KEY}
     gemini-api-key: ${GEMINI_API_KEY}
