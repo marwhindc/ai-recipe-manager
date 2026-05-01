@@ -8,6 +8,11 @@ spring:
     username: ${DB_USER:}
     password: ${DB_PASSWORD:}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      data-source-properties:
+        # Disable server-side prepared statements — required for Supabase/PgBouncer
+        # transaction pooler mode, which cannot share prepared statements across connections.
+        prepareThreshold: 0
   jpa:
     hibernate:
       ddl-auto: validate
