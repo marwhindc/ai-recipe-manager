@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 5% 0%, #fbe4c6 0%, transparent 45%),
+    radial-gradient(circle at 95% 10%, #f3d4ac 0%, transparent 40%),
+    #fff7ee;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #3a2d1f;
+}

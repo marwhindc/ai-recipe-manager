@@ -76,6 +76,13 @@ The frontend SHALL display all recipe fields (title, image, description, ingredi
 ### Requirement: Recipe form page supports create and edit modes
 The frontend SHALL render a single `RecipeFormPage` component that operates in either create mode (`/recipes/new`) or edit mode (`/recipes/:id/edit`). In edit mode, all fields are pre-populated with existing recipe data.
 
+The cover photo field SHALL support three input methods:
+1. **Upload from gallery** — opens the device file picker (no `capture` attribute), allowing the user to select an existing photo.
+2. **Take a photo** — opens the device camera directly via `capture="environment"` on the hidden `<input type="file">`.
+3. **Paste a URL** — reveals a text input for a remote image URL.
+
+When a file is selected (upload or camera), the frontend SHALL resize and compress the image client-side using an offscreen `<canvas>` (max 900 px on the longest side, JPEG quality 0.82) and store the resulting base64 data URL as `imageUrl`. No backend file-storage endpoint is required; the data URL is saved as-is in the `imageUrl` text column.
+
 #### Scenario: Create mode starts with blank form
 - **WHEN** a user navigates to `/recipes/new`
 - **THEN** all form fields are empty and the submit button reads "Save Recipe"
@@ -83,6 +90,18 @@ The frontend SHALL render a single `RecipeFormPage` component that operates in e
 #### Scenario: Edit mode pre-populates fields
 - **WHEN** a user navigates to `/recipes/:id/edit`
 - **THEN** all form fields are populated with the recipe's current values
+
+#### Scenario: User uploads a cover photo from gallery
+- **WHEN** a user taps "Upload" on the cover photo area
+- **THEN** the device file picker opens; on selection the image is resized/compressed client-side and previewed immediately
+
+#### Scenario: User takes a photo with the camera
+- **WHEN** a user taps "Camera" on the cover photo area
+- **THEN** the device camera opens; on capture the image is resized/compressed client-side and previewed immediately
+
+#### Scenario: User pastes a remote image URL
+- **WHEN** a user taps "URL" on the cover photo area
+- **THEN** a text input appears; typing a valid URL renders a live preview
 
 ### Requirement: Delete confirmation prevents accidental deletion
 The frontend SHALL show a confirmation modal before calling the delete API, giving the user a chance to cancel.
