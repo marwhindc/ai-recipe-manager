@@ -70,10 +70,11 @@ public class SecurityConfig {
         String port = frontendOrigin.replaceAll(".*:(\\d+)$", "$1");
         config.setAllowedOriginPatterns(List.of(
             frontendOrigin,
+            "http://localhost:" + port,
             "http://192.168.*.*:" + port,
             "http://10.*.*.*:" + port));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Content-Type"));
+        config.setAllowedHeaders(List.of("Content-Type", "ngrok-skip-browser-warning"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

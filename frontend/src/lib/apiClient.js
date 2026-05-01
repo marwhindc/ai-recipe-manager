@@ -1,5 +1,8 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+// ngrok free tier shows an interstitial page unless this header is present
+const NGROK_HEADER = API_BASE_URL?.includes('ngrok') ? { 'ngrok-skip-browser-warning': '1' } : {}
+
 let isRefreshing = false
 
 function toQueryString(query = {}) {
@@ -20,6 +23,7 @@ async function tryRefresh() {
     const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
       method: 'POST',
       credentials: 'include',
+      headers: { ...NGROK_HEADER },
     })
     return res.ok
   } catch {
@@ -39,6 +43,7 @@ export async function apiRequest(path, options = {}) {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      ...NGROK_HEADER,
       ...(options.headers ?? {})
     },
     body: options.body ? JSON.stringify(options.body) : undefined
@@ -52,6 +57,7 @@ export async function apiRequest(path, options = {}) {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          ...NGROK_HEADER,
           ...(options.headers ?? {})
         },
         body: options.body ? JSON.stringify(options.body) : undefined

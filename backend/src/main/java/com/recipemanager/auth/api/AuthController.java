@@ -104,7 +104,7 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setMaxAge(maxAgeSeconds);
         cookie.setSecure(cookieSecure);
-        cookie.setAttribute("SameSite", "Lax");
+        cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
         response.addCookie(cookie);
     }
 
@@ -114,6 +114,7 @@ public class AuthController {
         cookie.setPath("/");
         cookie.setMaxAge(0);
         cookie.setSecure(cookieSecure);
+        cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
         response.addCookie(cookie);
     }
 

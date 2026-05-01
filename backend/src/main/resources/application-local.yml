@@ -25,7 +25,7 @@ spring:
 
 app:
   cookie:
-    secure: false
-  base-url: http://localhost:8080
+    secure: ${COOKIE_SECURE:false}
+  base-url: ${BASE_URL:http://localhost:8080}
   jwt:
     secret: bG9jYWwtZGV2LXNlY3JldC1ub3QtZm9yLXByb2R1Y3Rpb24tdXNlLW9ubHk

@@ -65,7 +65,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         cookie.setPath("/");
         cookie.setMaxAge(maxAgeSeconds);
         cookie.setSecure(cookieSecure);
-        cookie.setAttribute("SameSite", "Lax");
+        cookie.setAttribute("SameSite", cookieSecure ? "None" : "Lax");
         response.addCookie(cookie);
     }
 }
