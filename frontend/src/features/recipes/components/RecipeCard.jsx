@@ -1,3 +1,4 @@
+import { Clock3 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const PLACEHOLDER_IMAGE =
@@ -8,33 +9,25 @@ export default function RecipeCard({ recipe }) {
 
   return (
     <Link
-      className="group block overflow-hidden rounded-2xl transition hover:-translate-y-1 hover:shadow-card"
-      to={`/recipes/${recipe.id}`}
+      className="group flex cursor-pointer flex-col gap-2"
+      to={`/recipe/${recipe.id}`}
     >
-      <div className="aspect-square overflow-hidden rounded-2xl">
+      <div className="relative aspect-square overflow-hidden rounded-2xl bg-parchment shadow-sm transition-shadow group-hover:shadow-md">
         <img
           alt={recipe.title}
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
           src={recipe.imageUrl || PLACEHOLDER_IMAGE}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
-      <div className="mt-2 px-0.5">
-        <h3 className="line-clamp-2 text-sm font-semibold leading-tight text-brand-cocoa">
-          {recipe.title}
-        </h3>
-        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-          {recipe.cuisine && (
-            <span className="rounded-full bg-brand-sand px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-rust">
-              {recipe.cuisine}
-            </span>
-          )}
-          <div className="flex items-center gap-1 text-xs text-gray-400">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 6v6l4 2" />
-            </svg>
+      <div className="space-y-1 px-1">
+        <h3 className="line-clamp-2 font-display leading-tight text-espresso">{recipe.title}</h3>
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-taupe">
+          <div className="flex items-center gap-1">
+            <Clock3 size={12} />
             <span>{totalTime}m</span>
           </div>
+          {recipe.cuisine && <span>{recipe.cuisine}</span>}
         </div>
       </div>
     </Link>

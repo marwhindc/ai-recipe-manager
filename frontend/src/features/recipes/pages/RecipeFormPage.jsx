@@ -1,20 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { Camera, GripVertical, Plus, Trash2, X } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getRecipe } from '../services/recipeService'
 import { useRecipeForm } from '../hooks/useRecipeForm'
 import LoadingOverlay from '../../../shared/components/LoadingOverlay'
-import BottomNav from '../../../shared/components/BottomNav'
-
-function TrashIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="3 6 5 6 21 6" />
-      <path d="M19 6l-1 14H6L5 6" />
-      <path d="M10 11v6M14 11v6" />
-      <path d="M9 6V4h6v2" />
-    </svg>
-  )
-}
 
 export default function RecipeFormPage() {
   const { id } = useParams()
@@ -71,28 +60,31 @@ export default function RecipeFormPage() {
   } = useRecipeForm({
     recipeId: id,
     initialData,
-    onSaved: (savedRecipe) => navigate(`/recipes/${savedRecipe.id}`)
+    onSaved: (savedRecipe) => navigate(`/recipe/${savedRecipe.id}`)
   })
 
   return (
-    <div className="mx-auto w-full max-w-lg min-h-screen bg-[#faf6f0] pb-28">
-      {/* Top bar */}
-      <div className="flex items-center justify-between px-4 pb-4 pt-12">
+    <div className="mx-auto w-full max-w-lg min-h-screen bg-cream pb-28">
+      <div className="flex items-center justify-between px-4 pb-4 pt-5">
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-full bg-white shadow"
-          onClick={() => navigate('/recipes')}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-linen bg-white text-espresso shadow-sm"
+          onClick={() => navigate(id ? `/recipe/${id}` : '/')}
           type="button"
           aria-label="Close"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A2D1F" strokeWidth="2.5">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
+          <X size={18} />
         </button>
-        <h1 className="font-display text-lg font-bold text-brand-cocoa">
+        <h1 className="font-display text-lg text-espresso">
           {isEdit ? 'Edit Recipe' : 'New Recipe'}
         </h1>
-        {/* Spacer to keep title centred */}
-        <div className="h-9 w-9" />
+        <button
+          className="px-2 text-sm font-semibold text-paprika disabled:opacity-50"
+          disabled={saving}
+          form="recipe-form"
+          type="submit"
+        >
+          Save
+        </button>
       </div>
 
       <form className="space-y-5" id="recipe-form" onSubmit={submit}>
@@ -109,7 +101,7 @@ export default function RecipeFormPage() {
           />
 
           {/* Preview / placeholder tap area */}
-          <div className="relative w-full overflow-hidden rounded-2xl border-2 border-dashed border-[#e0c9a8] bg-white">
+          <div className="relative w-full overflow-hidden rounded-2xl border-2 border-dashed border-linen bg-white">
             {form.imageUrl ? (
               <>
                 <img alt="Cover" className="h-44 w-full object-cover" src={form.imageUrl} />
@@ -120,10 +112,7 @@ export default function RecipeFormPage() {
                     className="flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm"
                     onClick={() => fileInputRef.current?.click()}
                   >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                      <circle cx="12" cy="13" r="4" />
-                    </svg>
+                    <Camera size={12} />
                     Change
                   </button>
                   <button
@@ -139,7 +128,7 @@ export default function RecipeFormPage() {
                 </div>
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center py-10 text-brand-cocoa/40">
+              <div className="flex flex-col items-center justify-center py-10 text-espresso/40">
                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
                   <circle cx="12" cy="13" r="4" />
@@ -166,7 +155,7 @@ export default function RecipeFormPage() {
                   </button>
                   <button
                     type="button"
-                    className="flex items-center gap-1.5 rounded-full border border-[#e0c9a8] bg-white px-4 py-2 text-xs font-semibold text-brand-cocoa shadow-sm"
+                    className="flex items-center gap-1.5 rounded-full border border-linen bg-white px-4 py-2 text-xs font-semibold text-espresso shadow-sm"
                     onClick={() => {
                       if (fileInputRef.current) {
                         fileInputRef.current.setAttribute('capture', 'environment')
@@ -182,7 +171,7 @@ export default function RecipeFormPage() {
                   </button>
                   <button
                     type="button"
-                    className="flex items-center gap-1.5 rounded-full border border-[#e0c9a8] bg-white px-4 py-2 text-xs font-semibold text-brand-cocoa shadow-sm"
+                    className="flex items-center gap-1.5 rounded-full border border-linen bg-white px-4 py-2 text-xs font-semibold text-espresso shadow-sm"
                     onClick={() => setShowImageInput((v) => !v)}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -199,7 +188,7 @@ export default function RecipeFormPage() {
           {showImageInput && !form.imageUrl && (
             <div className="mt-2">
               <input
-                className="w-full rounded-xl border border-[#e7cba8] bg-white px-3 py-2 text-sm outline-none ring-brand-rust focus:ring-2"
+                className="w-full rounded-xl border border-linen bg-white px-3 py-2 text-sm outline-none ring-paprika focus:ring-2"
                 placeholder="Paste image URL..."
                 value={form.imageUrl}
                 onChange={(e) => updateField('imageUrl', e.target.value)}
@@ -209,9 +198,9 @@ export default function RecipeFormPage() {
         </div>
 
         {/* Title */}
-        <div className="mx-4 border-b-2 border-brand-sand pb-2 transition-colors focus-within:border-brand-rust">
+        <div className="mx-4 border-b-2 border-parchment pb-2 transition-colors focus-within:border-paprika">
           <input
-            className="w-full bg-transparent font-display text-3xl font-bold text-brand-cocoa placeholder-brand-cocoa/25 outline-none"
+            className="w-full bg-transparent font-display text-3xl text-espresso placeholder-espresso/25 outline-none"
             placeholder="Recipe name…"
             value={form.title}
             onChange={(e) => updateField('title', e.target.value)}
@@ -221,9 +210,9 @@ export default function RecipeFormPage() {
 
         {/* Description */}
         <div className="mx-4">
-          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-brand-cocoa/40">Description</p>
+          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-espresso/40">Description</p>
           <textarea
-            className="w-full rounded-xl border border-[#e7cba8] bg-white px-3 py-2 text-sm text-brand-cocoa placeholder-brand-cocoa/30 outline-none ring-brand-rust focus:ring-2"
+            className="w-full rounded-xl border border-linen bg-white px-3 py-2 text-sm text-espresso placeholder-espresso/30 outline-none ring-paprika focus:ring-2"
             placeholder="Describe your recipe..."
             rows={3}
             value={form.description}
@@ -234,26 +223,26 @@ export default function RecipeFormPage() {
         {/* Serves + Prep Time + Cook Time steppers */}
         <div className="mx-4 grid grid-cols-3 gap-2">
           {/* Serves */}
-          <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#ead2b5] bg-white px-2 py-4">
+          <div className="flex flex-col items-center gap-1 rounded-2xl border border-linen bg-white px-2 py-4">
             <div className="flex items-center gap-1">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5F6F52" strokeWidth="2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6e7d45" strokeWidth="2">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
               </svg>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-brand-cocoa/50">Serves</p>
+              <p className="text-[9px] font-bold uppercase tracking-widest text-espresso/50">Serves</p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('servings', Math.max(1, (Number(form.servings) || 0) - 1))}
               >
                 <span className="text-base leading-none">−</span>
               </button>
-              <span className="w-6 text-center text-lg font-bold text-brand-cocoa">{form.servings || 0}</span>
+              <span className="w-6 text-center text-lg font-bold text-espresso">{form.servings || 0}</span>
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('servings', (Number(form.servings) || 0) + 1)}
               >
                 <span className="text-base leading-none">+</span>
@@ -262,26 +251,26 @@ export default function RecipeFormPage() {
           </div>
 
           {/* Prep Time */}
-          <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#ead2b5] bg-white px-2 py-4">
+          <div className="flex flex-col items-center gap-1 rounded-2xl border border-linen bg-white px-2 py-4">
             <div className="flex items-center gap-1">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5F6F52" strokeWidth="2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6e7d45" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 6v6l4 2" />
               </svg>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-brand-cocoa/50">Prep</p>
+              <p className="text-[9px] font-bold uppercase tracking-widest text-espresso/50">Prep</p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('prepTimeMinutes', Math.max(0, (Number(form.prepTimeMinutes) || 0) - 5))}
               >
                 <span className="text-base leading-none">−</span>
               </button>
-              <span className="w-8 text-center text-lg font-bold text-brand-cocoa">{form.prepTimeMinutes || 0}m</span>
+              <span className="w-8 text-center text-lg font-bold text-espresso">{form.prepTimeMinutes || 0}m</span>
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('prepTimeMinutes', (Number(form.prepTimeMinutes) || 0) + 5)}
               >
                 <span className="text-base leading-none">+</span>
@@ -290,26 +279,26 @@ export default function RecipeFormPage() {
           </div>
 
           {/* Cook Time */}
-          <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#ead2b5] bg-white px-2 py-4">
+          <div className="flex flex-col items-center gap-1 rounded-2xl border border-linen bg-white px-2 py-4">
             <div className="flex items-center gap-1">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5F6F52" strokeWidth="2">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#6e7d45" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 6v6l4 2" />
               </svg>
-              <p className="text-[9px] font-bold uppercase tracking-widest text-brand-cocoa/50">Cook</p>
+              <p className="text-[9px] font-bold uppercase tracking-widest text-espresso/50">Cook</p>
             </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('cookTimeMinutes', Math.max(0, (Number(form.cookTimeMinutes) || 0) - 5))}
               >
                 <span className="text-base leading-none">−</span>
               </button>
-              <span className="w-8 text-center text-lg font-bold text-brand-cocoa">{form.cookTimeMinutes || 0}m</span>
+              <span className="w-8 text-center text-lg font-bold text-espresso">{form.cookTimeMinutes || 0}m</span>
               <button
                 type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 text-brand-cocoa"
+                className="flex h-6 w-6 items-center justify-center rounded-full border border-linen text-espresso"
                 onClick={() => updateField('cookTimeMinutes', (Number(form.cookTimeMinutes) || 0) + 5)}
               >
                 <span className="text-base leading-none">+</span>
@@ -321,8 +310,8 @@ export default function RecipeFormPage() {
         {/* Ingredients */}
         <div className="mx-4">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-display text-xl font-bold text-brand-cocoa">Ingredients</h2>
-            <span className="text-sm text-brand-cocoa/50">
+            <h2 className="font-display text-xl text-espresso">Ingredients</h2>
+            <span className="text-sm text-taupe">
               {form.ingredients.filter((i) => i.name).length} added
             </span>
           </div>
@@ -333,8 +322,8 @@ export default function RecipeFormPage() {
                 className={[
                   'flex items-center gap-2 rounded-2xl border bg-white px-3 py-2 transition-all',
                   overIdx === index && dragIdx !== null && dragIdx !== index
-                    ? 'border-brand-rust scale-[1.01] shadow-card'
-                    : 'border-[#ead2b5]',
+                    ? 'border-paprika scale-[1.01] shadow-card'
+                    : 'border-linen',
                   dragIdx === index ? 'opacity-50' : 'opacity-100'
                 ].join(' ')}
                 key={`ingredient-${index}`}
@@ -361,7 +350,7 @@ export default function RecipeFormPage() {
                       })
                       if (target !== overIdx) setOverIdx(target)
                     }}
-                    onPointerUp={(e) => {
+                    onPointerUp={() => {
                       if (dragIdx === index) {
                         if (overIdx !== null && overIdx !== dragIdx) {
                           reorderIngredients(dragIdx, overIdx)
@@ -372,28 +361,24 @@ export default function RecipeFormPage() {
                     }}
                     onPointerCancel={() => { setDragIdx(null); setOverIdx(null) }}
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#bbb">
-                      <circle cx="9" cy="5" r="1.5" /><circle cx="15" cy="5" r="1.5" />
-                      <circle cx="9" cy="12" r="1.5" /><circle cx="15" cy="12" r="1.5" />
-                      <circle cx="9" cy="19" r="1.5" /><circle cx="15" cy="19" r="1.5" />
-                    </svg>
+                    <GripVertical size={14} />
                   </button>
                 </div>
                 <input
-                  className="w-10 shrink-0 bg-transparent text-sm font-semibold text-brand-rust outline-none placeholder-brand-rust/40"
+                  className="w-10 shrink-0 bg-transparent text-sm font-semibold text-paprika outline-none placeholder-paprika/40"
                   placeholder="qty"
                   value={ingredient.quantity}
                   onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
                 />
                 <input
-                  className="w-14 shrink-0 bg-transparent text-sm font-semibold text-brand-rust outline-none placeholder-brand-rust/40"
+                  className="w-14 shrink-0 bg-transparent text-sm font-semibold text-paprika outline-none placeholder-paprika/40"
                   placeholder="unit"
                   value={ingredient.unit}
                   onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
                 />
                 <div className="h-5 w-px shrink-0 bg-gray-200" />
                 <input
-                  className="min-w-0 flex-1 bg-transparent text-sm text-brand-cocoa outline-none placeholder-brand-cocoa/30"
+                  className="min-w-0 flex-1 bg-transparent text-sm text-espresso outline-none placeholder-espresso/30"
                   placeholder="Ingredient name"
                   value={ingredient.name}
                   onChange={(e) => updateIngredient(index, 'name', e.target.value)}
@@ -404,25 +389,27 @@ export default function RecipeFormPage() {
                   onClick={() => removeIngredient(index)}
                   aria-label="Remove ingredient"
                 >
-                  <TrashIcon />
+                  <Trash2 size={16} />
                 </button>
               </div>
             ))}
           </div>
           <button
             type="button"
-            className="mt-2 w-full rounded-2xl border border-dashed border-[#e0c9a8] py-3 text-sm font-semibold text-brand-rust"
+            className="mt-2 w-full rounded-2xl border border-dashed border-linen py-3 text-sm font-semibold text-paprika"
             onClick={addIngredient}
           >
-            + Add ingredient
+            <span className="inline-flex items-center gap-1">
+              <Plus size={14} /> Add ingredient
+            </span>
           </button>
         </div>
 
         {/* Steps */}
         <div className="mx-4">
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="font-display text-xl font-bold text-brand-cocoa">Steps</h2>
-            <span className="text-sm text-brand-cocoa/50">
+            <h2 className="font-display text-xl text-espresso">Steps</h2>
+            <span className="text-sm text-taupe">
               {form.steps.filter((s) => s.instruction).length} added
             </span>
           </div>
@@ -430,14 +417,14 @@ export default function RecipeFormPage() {
           <div className="space-y-2">
             {form.steps.map((step, index) => (
               <div
-                className="flex gap-3 overflow-hidden rounded-2xl border border-[#ead2b5] bg-white px-3 py-3"
+                className="flex gap-3 overflow-hidden rounded-2xl border border-linen bg-white px-3 py-3"
                 key={`step-${index}`}
               >
-                <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-cocoa text-xs font-bold text-white">
+                <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-espresso text-xs font-bold text-white">
                   {index + 1}
                 </div>
                 <textarea
-                  className="flex-1 resize-none bg-transparent text-sm text-brand-cocoa outline-none placeholder-brand-cocoa/30"
+                  className="flex-1 resize-none bg-transparent text-sm text-espresso outline-none placeholder-espresso/30"
                   placeholder="Describe this step..."
                   rows={2}
                   value={step.instruction}
@@ -449,25 +436,27 @@ export default function RecipeFormPage() {
                   onClick={() => removeStep(index)}
                   aria-label="Remove step"
                 >
-                  <TrashIcon />
+                  <Trash2 size={16} />
                 </button>
               </div>
             ))}
           </div>
           <button
             type="button"
-            className="mt-2 w-full rounded-2xl border border-dashed border-[#e0c9a8] py-3 text-sm font-semibold text-brand-rust"
+            className="mt-2 w-full rounded-2xl border border-dashed border-linen py-3 text-sm font-semibold text-paprika"
             onClick={addStep}
           >
-            + Add step
+            <span className="inline-flex items-center gap-1">
+              <Plus size={14} /> Add step
+            </span>
           </button>
         </div>
 
         {/* Cuisine */}
         <div className="mx-4">
-          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-brand-cocoa/40">Cuisine</p>
+          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-espresso/40">Cuisine</p>
           <select
-            className="w-full rounded-xl border border-[#e7cba8] bg-white px-3 py-2 text-sm text-brand-cocoa outline-none ring-brand-rust focus:ring-2"
+            className="w-full rounded-xl border border-linen bg-white px-3 py-2 text-sm text-espresso outline-none ring-paprika focus:ring-2"
             value={form.cuisine}
             onChange={(e) => updateField('cuisine', e.target.value)}
           >
@@ -483,7 +472,7 @@ export default function RecipeFormPage() {
         {/* Save button — inside the form, at the bottom */}
         <div className="mx-4 pb-4">
           <button
-            className="w-full rounded-2xl bg-brand-rust py-4 text-sm font-semibold text-white shadow-card transition active:scale-[0.98] disabled:opacity-50"
+            className="w-full rounded-2xl bg-paprika py-4 text-sm font-semibold text-white shadow-lg shadow-paprika/30 transition active:scale-[0.98] disabled:opacity-50"
             disabled={saving}
             type="submit"
           >
@@ -493,7 +482,6 @@ export default function RecipeFormPage() {
       </form>
 
       <LoadingOverlay show={loading} />
-      <BottomNav />
     </div>
   )
 }

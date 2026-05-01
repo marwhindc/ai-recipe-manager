@@ -4,18 +4,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        brand: {
-          cream: '#FFF5E8',
-          sand: '#F8E1C5',
-          amber: '#F28C28',
-          rust: '#D14900',
-          olive: '#5F6F52',
-          cocoa: '#3A2D1F'
-        }
+        // Semantic tokens — matches DESIGN.md / Culinary-Canvas prototype
+        saffron:    '#f0a83c',   // warm accent, gradient highlights
+        paprika:    '#e07255',   // primary action: nav active, CTAs, focus rings
+        olive:      '#6e7d45',   // secondary accent
+        cream:      '#faf7f2',   // app background, page fill
+        espresso:   '#3d3028',   // primary text and headings
+        linen:      '#e8dfd4',   // dividers, card outlines, input strokes
+        parchment:  '#ede8e1',   // secondary surfaces, skeletons, muted bg
+        taupe:      '#918880',   // secondary text, timestamps, metadata
       },
       fontFamily: {
-        sans: ['Outfit', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['Fraunces', 'serif']
+        sans: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'ui-sans-serif', 'system-ui', 'sans-serif']
       },
       borderRadius: {
         xl: '1rem',
@@ -23,7 +24,7 @@ export default {
         '3xl': '1.75rem'
       },
       boxShadow: {
-        card: '0 14px 35px rgba(58, 45, 31, 0.08)'
+        card: '0 4px 24px rgba(58, 45, 31, 0.08)'
       },
       keyframes: {
         slideUp: {

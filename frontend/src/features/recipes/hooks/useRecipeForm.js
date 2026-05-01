@@ -36,10 +36,11 @@ export function useRecipeForm({ recipeId, initialData, onSaved }) {
 
   const isEdit = useMemo(() => Boolean(recipeId), [recipeId])
 
-  // Re-populate form when async initialData arrives (edit mode)
+  // Re-populate form when async initialData arrives (edit mode).
+  // Deferred via Promise so setState is not called synchronously in the effect body.
   useEffect(() => {
     if (initialData) {
-      setForm(normalizeRecipe(initialData))
+      Promise.resolve(normalizeRecipe(initialData)).then(setForm)
     }
   }, [initialData])
 

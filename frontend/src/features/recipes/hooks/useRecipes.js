@@ -6,24 +6,37 @@ export function useRecipes() {
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [version, setVersion] = useState(0)
 
-  const refresh = useCallback(async () => {
+  // refresh() is called from event handlers, never from effects
+  const refresh = useCallback(() => {
     setLoading(true)
-    setError('')
-    try {
-      const payload = await listRecipes()
-      setRecipes(payload?.data ?? [])
-      setTotal(payload?.total ?? 0)
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setLoading(false)
-    }
+    setVersion((v) => v + 1)
   }, [])
 
   useEffect(() => {
-    refresh()
-  }, [refresh])
+    let cancelled = false
+
+    listRecipes()
+      .then((payload) => {
+        if (!cancelled) {
+          setRecipes(payload?.data ?? [])
+          setTotal(payload?.total ?? 0)
+          setLoading(false)
+          setError('')
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message)
+          setLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [version])
 
   return { recipes, total, loading, error, refresh }
 }
