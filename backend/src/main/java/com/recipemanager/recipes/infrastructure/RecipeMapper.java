@@ -14,6 +14,8 @@ public class RecipeMapper {
         Recipe recipe = new Recipe();
         recipe.setUserId(userId);
         applyRequest(recipe, request);
+        recipe.setSourceUrl(request.sourceUrl());
+        recipe.setSource(request.source());
         return recipe;
     }
 
@@ -45,6 +47,8 @@ public class RecipeMapper {
             recipe.getCookTimeMinutes(),
             totalTime,
             recipe.getImageUrl(),
+            recipe.getSourceUrl(),
+            recipe.getSource(),
             recipe.getCreatedAt(),
             recipe.getUpdatedAt());
     }

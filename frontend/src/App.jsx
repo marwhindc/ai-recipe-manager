@@ -4,6 +4,7 @@ import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-do
 import ComingSoonPage from './features/placeholder/pages/ComingSoonPage'
 import RecipeDetailPage from './features/recipes/pages/RecipeDetailPage'
 import RecipeFormPage from './features/recipes/pages/RecipeFormPage'
+import RecipeImportPage from './features/recipes/pages/RecipeImportPage'
 import RecipeListPage from './features/recipes/pages/RecipeListPage'
 import AppShell from './shared/components/AppShell'
 
@@ -32,6 +33,7 @@ function AnimatedRoutes() {
         <Routes location={location}>
           <Route element={<RecipeListPage />} path="/" />
           <Route element={<RecipeFormPage />} path="/recipe/new" />
+          <Route element={<RecipeImportPage />} path="/recipe/import" />
           <Route element={<RecipeDetailPage />} path="/recipe/:id" />
           <Route element={<RecipeFormPage />} path="/recipe/:id/edit" />
 

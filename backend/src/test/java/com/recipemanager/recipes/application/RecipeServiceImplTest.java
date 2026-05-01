@@ -108,6 +108,19 @@ class RecipeServiceImplTest {
         verify(repository).deleteByIdAndUserId(recipeId, userId);
     }
 
+    @Test
+    void createRecipeWithSourceFieldsPersistsProvenance() {
+        UUID userId = UUID.randomUUID();
+        RecipeRequest request = buildRequestWithSource();
+        Recipe saved = buildRecipeWithSource(userId);
+        when(repository.save(any(Recipe.class))).thenReturn(saved);
+
+        RecipeResponse response = service.createRecipe(userId, request);
+
+        assertEquals("https://youtube.com/watch?v=abc", response.sourceUrl());
+        assertEquals("youtube", response.source());
+    }
+
     private RecipeRequest buildRequest() {
         return new RecipeRequest(
             "Adobo",
@@ -118,7 +131,9 @@ class RecipeServiceImplTest {
             4,
             15,
             45,
-            "https://example.com/image.jpg");
+            "https://example.com/image.jpg",
+            null,
+            null);
     }
 
     private Recipe buildRecipe(UUID userId) {
@@ -146,6 +161,28 @@ class RecipeServiceImplTest {
         } catch (ReflectiveOperationException ignored) {
         }
 
+        return recipe;
+    }
+
+    private RecipeRequest buildRequestWithSource() {
+        return new RecipeRequest(
+            "Adobo",
+            "Classic dish",
+            List.of(new Ingredient("Chicken", "1", "kg")),
+            List.of(new Step(1, "Simmer chicken")),
+            "Filipino",
+            4,
+            15,
+            45,
+            "https://example.com/image.jpg",
+            "https://youtube.com/watch?v=abc",
+            "youtube");
+    }
+
+    private Recipe buildRecipeWithSource(UUID userId) {
+        Recipe recipe = buildRecipe(userId);
+        recipe.setSourceUrl("https://youtube.com/watch?v=abc");
+        recipe.setSource("youtube");
         return recipe;
     }
 }

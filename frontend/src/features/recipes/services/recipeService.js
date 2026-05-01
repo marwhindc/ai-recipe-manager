@@ -19,3 +19,7 @@ export function updateRecipe(id, data) {
 export function deleteRecipe(id) {
   return apiRequest(`/recipes/${id}`, { method: 'DELETE' })
 }
+
+export function importRecipeFromLink(sourceUrl) {
+  return apiRequest('/recipes/import/video', { method: 'POST', body: { sourceUrl } })
+}

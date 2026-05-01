@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Camera, GripVertical, Plus, Trash2, X } from 'lucide-react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { getRecipe } from '../services/recipeService'
 import { useRecipeForm } from '../hooks/useRecipeForm'
 import LoadingOverlay from '../../../shared/components/LoadingOverlay'
@@ -8,7 +8,9 @@ import LoadingOverlay from '../../../shared/components/LoadingOverlay'
 export default function RecipeFormPage() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [initialData, setInitialData] = useState(null)
+  const location = useLocation()
+  const importedDraft = location.state?.draft ?? null
+  const [initialData, setInitialData] = useState(importedDraft)
   const [loading, setLoading] = useState(Boolean(id))
   const [showImageInput, setShowImageInput] = useState(false)
   const [dragIdx, setDragIdx] = useState(null)

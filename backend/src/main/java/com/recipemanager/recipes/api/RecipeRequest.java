@@ -15,6 +15,8 @@ public record RecipeRequest(
     Integer servings,
     Integer prepTimeMinutes,
     Integer cookTimeMinutes,
-    String imageUrl
+    String imageUrl,
+    String sourceUrl,
+    String source
 ) {
 }

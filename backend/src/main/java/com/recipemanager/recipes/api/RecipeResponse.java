@@ -18,6 +18,8 @@ public record RecipeResponse(
     Integer cookTimeMinutes,
     Integer totalTimeMinutes,
     String imageUrl,
+    String sourceUrl,
+    String source,
     Instant createdAt,
     Instant updatedAt
 ) {

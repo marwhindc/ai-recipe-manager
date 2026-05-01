@@ -1,4 +1,4 @@
-﻿import { Link2, PencilLine, X } from 'lucide-react'
+﻿import { Link2, PencilLine, Sparkles, X } from 'lucide-react'
 import { Drawer } from 'vaul'
 import { useNavigate } from 'react-router-dom'
 
@@ -51,26 +51,27 @@ export default function AddRecipeSheet({ open, onOpenChange }) {
               </div>
             </button>
 
-            <div
-              aria-disabled="true"
-              className="w-full rounded-[1.5rem] border border-linen bg-white p-5 opacity-40 cursor-not-allowed select-none"
+            <button
+              className="w-full rounded-[1.5rem] border border-paprika/20 bg-gradient-to-br from-paprika/5 to-olive/5 p-5 text-left active:scale-[0.99] transition-transform"
               data-testid="action-import"
+              onClick={() => go('/recipe/import')}
+              type="button"
             >
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-olive/15 text-olive">
-                  <Link2 size={22} />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-paprika/10 text-paprika">
+                  <Sparkles size={22} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <h3 className="font-display text-lg text-espresso">Import from a link</h3>
-                    <span className="rounded-full bg-parchment px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-taupe">
-                      Soon
+                    <span className="rounded-full bg-paprika/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-paprika">
+                      AI
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-taupe">Coming soon</p>
+                  <p className="mt-1 text-sm text-taupe">YouTube or Facebook video URL.</p>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         </Drawer.Content>
       </Drawer.Portal>

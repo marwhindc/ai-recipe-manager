@@ -49,6 +49,12 @@ public class Recipe {
     @Column(name = "image_url", columnDefinition = "text")
     private String imageUrl;
 
+    @Column(name = "source_url", columnDefinition = "text")
+    private String sourceUrl;
+
+    @Column(name = "source")
+    private String source;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
@@ -156,6 +162,22 @@ public class Recipe {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public Instant getCreatedAt() {

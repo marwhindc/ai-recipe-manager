@@ -43,3 +43,25 @@ create table if not exists public.recipes (
 - `DB_USER`
 - `DB_PASSWORD`
 - `FRONTEND_ORIGIN`
+
+## AI Video Import
+
+The `videoimport` feature requires three external services, each configured via environment variable:
+
+| Variable | Description |
+|---|---|
+| `YTDLP_PATH` | Path to the `yt-dlp` binary (default: `yt-dlp` — must be on PATH) |
+| `ASSEMBLYAI_API_KEY` | AssemblyAI API key for audio transcription |
+| `GEMINI_API_KEY` | Google Gemini API key for recipe extraction |
+
+**Install yt-dlp (local dev):**
+```bash
+pip install yt-dlp
+# or download binary from https://github.com/yt-dlp/yt-dlp/releases
+```
+
+**Feature structure:** `com.recipemanager.videoimport.{api,application,infrastructure}`
+- Ports: `VideoDownloader`, `TranscriptionService`, `RecipeExtractionService`
+- Orchestrator: `VideoImportOrchestrator`
+- Adapters: `YtDlpVideoDownloader`, `AssemblyAiTranscriptionService`, `GeminiRecipeExtractionService`
+- Endpoint: `POST /api/v1/recipes/import/video` (requires auth, returns `RecipeDraftResponse`)

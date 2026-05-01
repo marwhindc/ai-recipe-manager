@@ -24,3 +24,7 @@ server:
 
 app:
   frontend-origin: ${FRONTEND_ORIGIN:http://localhost:5173}
+  videoimport:
+    ytdlp-path: ${YTDLP_PATH:${user.dir}/bin/yt-dlp.exe}
+    assemblyai-api-key: ${ASSEMBLYAI_API_KEY:e1918ed6089541689c9b55017fe55754}
+    gemini-api-key: ${GEMINI_API_KEY:AIzaSyBa4M5iUNaZHEbz0dnMK6iA4s5cYbD6Hjg}

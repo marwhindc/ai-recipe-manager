@@ -7,6 +7,7 @@ import BottomNav from './BottomNav'
 const HIDE_CHROME_PATTERNS = [
   /^\/recipe\/[^/]+$/,
   /^\/recipe\/new$/,
+  /^\/recipe\/import$/,
   /^\/recipe\/[^/]+\/edit$/
 ]
 
